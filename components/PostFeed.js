@@ -10,6 +10,7 @@ function PostItem({ post, admin = false }) {
 
     return (
         <div className="card">
+            <img src={post.authorImage} />
             <Link
                 href={`/${post.username}`}
             >
@@ -25,8 +26,8 @@ function PostItem({ post, admin = false }) {
                     <a>{post.tittle}</a>
                 </h2>
             </Link>
-
-            <footer>
+            <p>{new Date(post.createdAt).toISOString()}</p>
+            <footer className="flex">
                 <span>
                     {wordCount} words. {minutesToRead} min read
                 </span>

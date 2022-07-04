@@ -11,17 +11,6 @@ const Navbar = () => {
 
     const photoURL = user?.photoURL;
 
-    const signOut = () => {
-        auth.signOut();
-        toast('See you soon!', {
-            icon: '🌝',
-            style: {
-                border: '1px solid #333',
-              },
-        });
-        router.push('/');
-    }
-
     return (
         <nav className="navbar">
             <ul>
@@ -32,23 +21,30 @@ const Navbar = () => {
                     username ? (
                         <>
                             <li className='push-left'>
-                                <button
-                                    onClick={signOut}
-                                    className='btn-red'
+                                <Link
+                                    href={'/signout'}
                                 >
-                                    Sign Out
-                                </button>
+                                    <button
+                                        className='btn-red'
+                                    >Sign Out</button>
+                                </Link>
                             </li>
                             <li>
                                 <Link href={'/admin'}>
                                     <button
-                                        className='btn-blue'
+                                        className='btn btn-blue'
                                     >Write Posts</button>
                                 </Link>
                             </li>
                             <li>
                                 <Link href={`/${username}`}>
-                                    <img src={photoURL} />
+                                    {
+                                        photoURL ? (
+                                            <img src={photoURL} />
+                                        ) : (
+                                            <img src="/profile.png" />
+                                        )
+                                    }
                                 </Link>
                             </li>
                         </>

@@ -1,11 +1,9 @@
-import { async } from "@firebase/util";
-import { getRedirectResult, signInWithRedirect } from "firebase/auth";
+import { getRedirectResult, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
 import debounce from "lodash.debounce";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useState } from "react";
-import Cookies from "universal-cookie";
+import toast from "react-hot-toast";
 import { UserContext } from "../lib/context";
 import { auth, db, facebookAuthProvider, googleAuthProvider, twitterAuthProvider } from "../lib/firebase";
 
@@ -40,9 +38,6 @@ const Enter = ({ }) => {
 function SignInGoogle() {
     const signInWithGoogle = async () => {
         await signInWithRedirect(auth, googleAuthProvider);
-        const cookies = new Cookies();
-        cookies.set(key1, value1, { secure: true, sameSite: 'none' });
-        cookies.set(key2, value2, { secure: true, sameSite: 'none' });
     };
 
     return (
@@ -53,27 +48,20 @@ function SignInGoogle() {
 }
 
 function SignInTwitter() {
-    const cookies = new Cookies();
-
     const signInWithTwitter = async () => {
         await signInWithRedirect(auth, twitterAuthProvider);
         getRedirectResult(auth)
-            .then((result) => {
-                // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
-                // You can use these server side with your app's credentials to access the Twitter API.
-                const credential = twitterAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                const secret = credential.secret;
+            .then(result => {
+                const userRef = result.user;
 
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user);
-                cookies.set('twitter', auth, { secure: true, sameSite: 'none' });
-                console.log(cookies.get('twitter'));
-            }).catch((error) => {
-                console.log(error);
+                if (userRef) {
+                    toast('Welcome!')
+                }
+            }).catch(error => {
+                const errorMessage = error.message;
+                toast('Something gone wrong!', errorMessage);
+                console.log(errorMessage);
             });
-
     }
 
     return (
@@ -87,17 +75,12 @@ function SignInFacebook() {
     const signInWithFacebook = async () => {
         await signInWithRedirect(auth, facebookAuthProvider);
         getRedirectResult(auth)
-            .then((result) => {
-                const credential = facebookAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                const user = result.user;
-                console.log(user);
-            }).catch((error) => {
-                const errorCode = error.code;
+            .then(() => {
+                toast('Welcome!');
+            }).catch(error => {
                 const errorMessage = error.message;
-                const email = error.customData.email;
-                const credential = facebookAuthProvider.credentialFromError(error);
-            })
+                toast('Something gone wrong!', errorMessage);
+            });
     }
     return (
         <button className="btn-facebook" onClick={signInWithFacebook}>
@@ -131,26 +114,12 @@ function SignInWithEmail() {
     )
 }
 
-// function Redirect() {
-//     const router = useRouter();
-//     const { user, username } = useContext(UserContext);
-
-//     return (
-//         <div className="flex-c">
-//             <p>Already signed in...</p>
-//             <Link href={'/'}>
-//                 <button>Back to secure zone 🧑‍🚀</button>
-//             </Link>
-//         </div>
-//     )
-// }
-
 function Redirect() {
     const router = useRouter();
     const { user, username } = useContext(UserContext);
 
     useEffect(() => {
-        if(user && username) {
+        if (user && username) {
             router.push('/');
         }
     }, [user, username]);

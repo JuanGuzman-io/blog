@@ -1,4 +1,4 @@
-import { collection, doc, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, limit, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { useContext, useState } from "react";
 import AuthCheck from "../../components/AuthCheck";
 import { UserContext } from "../../lib/context";
@@ -27,7 +27,7 @@ const AdminPost = () => {
 function PostList() {
     const { user } = useContext(UserContext);
     const ref = collection(db, 'users', user.uid, 'posts');
-    const q = query(ref, orderBy('createdAt'));
+    const q = query(ref, orderBy('createdAt', 'desc'), limit(5));
     const [querySnapshot] = useCollection(q)
 
     const posts = querySnapshot?.docs.map(doc => doc.data());
@@ -40,6 +40,7 @@ function PostList() {
                 <h1>New post</h1>
                 <CreateNewPost />
             </section>
+            <h3 className="center">Last five posts</h3>
             <PostFeed posts={posts} admin />
         </>
     )

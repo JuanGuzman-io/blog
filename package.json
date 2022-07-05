@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "date-fns": "^2.28.0",
     "firebase": "^9.8.4",
     "lodash.debounce": "^4.0.8",
     "lodash.kebabcase": "^4.1.1",

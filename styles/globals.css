@@ -11,12 +11,12 @@
 
 html,
 body {
-  padding         : 0;
-  margin          : 0;
-  font-family     : 'Noto Sans', sans-serif;
-  background-color: var(--color-bg);
-  color           : var(--color-text);
-  margin-top      : 50px;
+  padding            : 0;
+  margin             : 0;
+  font-family        : 'Noto Sans', sans-serif;
+  /* background-color: var(--color-bg); */
+  color              : var(--color-text);
+  margin-top         : 50px;
 }
 
 main {
@@ -50,12 +50,13 @@ img {
 }
 
 input {
-  display  : inline-block;
-  outline  : none;
-  border   : none;
-  font-size: 1.5rem;
-  width    : 100%;
-  padding  : 5px 10px;
+  display         : inline-block;
+  outline         : none;
+  border          : none;
+  font-size       : 1.5rem;
+  width           : 100%;
+  padding         : 5px 10px;
+  background-color: var(--color-bg);
 }
 
 fieldset {
@@ -308,10 +309,41 @@ button.btn-logo {
 
 .card {
   padding         : 2rem;
-  margin          : 1rem 0;
   background-color: white;
   border          : 1px solid var(--color-gray);
-  border-radius   : 8px;
+  border-radius   : 0.625rem;
+  width           : 50%;
+  margin          : 1.5rem auto;
+  transition      : all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
+}
+
+.card img {
+  width        : 30px;
+  border-radius: 50%;
+}
+
+.username {
+  height: fit-content;
+}
+
+.card .username:hover {
+  background-color: var(--color-bg);
+}
+
+.card h2 a:hover {
+  color: var(--color-blue);
+}
+
+.time {
+  margin   : 0rem;
+  padding  : 0rem;
+  font-size: 0.875rem;
+  color    : #818181;
+}
+
+.user {
+  display: flex;
+  gap    : 0.625rem;
 }
 
 .card footer {
@@ -329,6 +361,18 @@ button.btn-logo {
 .card-info {
   color     : white;
   background: var(--color-blue);
+}
+
+@media only screen and (max-width: 75rem) {
+  .card {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 48rem) {
+  .card {
+    width: 100%;
+  }
 }
 
 /* Loader */

@@ -1,13 +1,14 @@
 import { collection, collectionGroup, doc, getDoc, getDocs } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import { db, getUserWithUsername, postToJSON } from "../../lib/firebase";
-import style from '../../styles/Post.module.css'
+import style from '../../styles/Post.module.css';
+import PostContent from '../../components/PostContent'
 
 export async function getStaticProps({ params }) {
     const { username, slug } = params;
     let ref;
     const userDoc = await getUserWithUsername(username);
-    userDoc.forEach(doc => doc.ref);
-    console.log(ref);
+    userDoc.forEach(doc => ref = doc.ref);
 
     debugger;
 
@@ -16,8 +17,9 @@ export async function getStaticProps({ params }) {
 
     if (userDoc) {
         const postRef = collection(ref, 'posts');
-        post = postToJSON(await getDoc(postRef));
-        path = postRef.path;
+        const docRef = doc(postRef, slug);
+        post = postToJSON(await getDoc(docRef));
+        path = docRef.path;
     }
 
     return {
@@ -49,7 +51,6 @@ const UserPost = (props) => {
     const post = realtimePost || props.post;
     return (
         <main className={style.container}>
-            <h1>User Post</h1>
             <section>
                 <PostContent post={post} />
             </section>
@@ -58,7 +59,6 @@ const UserPost = (props) => {
                 <p>
                     <strong>{post.upCount || 0} 🔼</strong>
                 </p>
-
             </aside>
         </main>
     );

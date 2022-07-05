@@ -1,23 +1,22 @@
 import { useState } from 'react';
-import { collectionGroup, getDocs, limit, startAfter, where, orderBy } from 'firebase/firestore';
+import { collectionGroup, getDocs, limit, startAfter, where, orderBy, query, collection } from 'firebase/firestore';
 import { db, fromMillis, postToJSON } from '../lib/firebase';
 import PostFeed from '../components/PostFeed';
 import Loader from '../components/Loader';
 import Metatags from '../components/Metatags';
 
-const LIMIT = 1;
+const LIMIT = 10;
 
 export async function getServerSideProps(context) {
-  const postQuery = collectionGroup(
-    db,
-    'posts',
-    where('published', '==', true),
+  const postRef = collectionGroup(db, 'posts');
+  const q = query(
+    postRef,
     orderBy('createdAt', 'desc'),
+    where('published', '==', true),
     limit(LIMIT)
   );
 
-  const posts = (await getDocs(postQuery)).docs.map(postToJSON);
-  console.log(posts);
+  const posts = (await getDocs(q)).docs.map(postToJSON);
 
   return { props: { posts } }
 }
@@ -32,16 +31,17 @@ export default function Home(props) {
     const last = posts[posts.length - 1];
     const cursor = typeof last.createdAt === 'number' ? fromMillis(last.createdAt) : last.createdAt;
 
-    const query = collectionGroup(
-      db,
-      'posts',
-      where('published', '==', true),
+    const postRef = collectionGroup(db, 'posts');
+    const q = query(
+      postRef,
       orderBy('createdAt', 'desc'),
+      where('published', '==', true),
       startAfter(cursor),
       limit(LIMIT)
     );
 
-    const newPosts = (await getDocs(query)).docs.map(doc => doc.data());
+    const newPosts = (await getDocs(q)).docs.map(doc => doc.data())
+    console.log(newPosts);
 
     setPosts(posts.concat(newPosts));
     setLoading(false);
@@ -58,13 +58,13 @@ export default function Home(props) {
         description='Feed, all pots from blog community'
       />
       <main>
-        <h1>
-          Feed
-        </h1>
         <PostFeed posts={posts} />
-        {!loading && !postsEnd && <button onClick={getMorePosts}>Load more</button>}
-        <Loader show={loading} />
-        {postsEnd && <p>There are no more posts 😣</p>}
+
+        <section className='center'>
+          {!loading && !postsEnd && <button onClick={getMorePosts}>Load more</button>}
+          <Loader show={loading} />
+          {postsEnd && <p>There are no more posts 😣</p>}
+        </section>
       </main>
     </>
   )

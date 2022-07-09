@@ -1,8 +1,9 @@
 import { collection, collectionGroup, doc, getDoc, getDocs } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { db, getUserWithUsername, postToJSON } from "../../lib/firebase";
-import style from '../../styles/Post.module.css';
 import PostContent from '../../components/PostContent'
+import { Box, Container, Flex, Text } from "@chakra-ui/react";
+import { BiUpArrow } from "react-icons/bi";
 
 export async function getStaticProps({ params }) {
     const { username, slug } = params;
@@ -50,17 +51,30 @@ const UserPost = (props) => {
 
     const post = realtimePost || props.post;
     return (
-        <main className={style.container}>
-            <section>
-                <PostContent post={post} />
-            </section>
-
-            <aside className="card">
-                <p>
-                    <strong>{post.upCount || 0} 🔼</strong>
-                </p>
-            </aside>
-        </main>
+        <Container
+            maxW={'100%'}
+        >
+            <Flex
+                justifyContent={'space-between'}
+                alignItems={'start'}
+                flexWrap={'wrap-reverse'}
+            >
+                <Box
+                    width={'10%'}
+                    padding={'1rem'}
+                >
+                    <Text
+                        display={'flex'}
+                        alignItems={'center'}
+                    ><BiUpArrow /></Text>
+                </Box>
+                <Box
+                    width={'90%'}
+                >
+                    <PostContent post={post} />
+                </Box>
+            </Flex>
+        </Container>
     );
 }
 

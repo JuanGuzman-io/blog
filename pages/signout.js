@@ -1,3 +1,4 @@
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { auth } from "../lib/firebase";
@@ -17,15 +18,20 @@ const SignOut = () => {
     }
 
     return (
-        <main className="center">
-            <section>
-                <h3>Are you sure you want to sign out?</h3>
-                <button
-                    onClick={signOut}
-                    className='btn-black'
-                >Yes, good bye</button>
-            </section>
-        </main>
+        <Box
+            maxW={'sm'}
+            margin={'0 auto'}
+        >
+            <Heading textAlign={'center'} fontSize={'xl'}>Are you sure you want to sign out?</Heading>
+            <Button
+                onClick={signOut}
+                bg={'#000'}
+                color={'white'}
+                _hover={{ bg: '#000', textDecoration: 'underline' }}
+                width={'100%'}
+                mt={4}
+            >Yes, good bye</Button>
+        </Box>
     );
 }
 

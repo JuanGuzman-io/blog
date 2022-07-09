@@ -29,7 +29,9 @@ function PostItem({ post, admin = false }) {
 
                     {
                         router.pathname === '/admin' ? (
-                            null
+                            <span>
+                                {post.published ? <p className='text-success'>Public</p> : <p className='text-danger'>Unpublished</p>}
+                            </span>
                         ) : (
                             <span className="time">Hace {formatDistanceToNowStrict(new Date(post.createdAt), { locale: es })}</span>
                         )
@@ -44,6 +46,17 @@ function PostItem({ post, admin = false }) {
                     </span>
                     <span>🔼 {post.upCount}</span>
                 </footer>
+                {
+                    admin && (
+                        <Link
+                            href={`/admin/${post.slug}`}
+                        >
+                            <h1>
+                                <button className='btn-blue'>Edit</button>
+                            </h1>
+                        </Link>
+                    )
+                }
             </div>
         </Link>
     )

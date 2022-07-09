@@ -7,9 +7,9 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { useRouter } from "next/router";
 import kebabCase from "lodash.kebabcase";
 import toast from "react-hot-toast";
-import PostFeed from '../../components/PostFeed';
+import Feed from '../../components/Feed';
 import Metatags from '../../components/Metatags';
-import styles from '../../styles/Admin.module.css';
+import { Box, Button, Container, Flex, FormControl, Input, Text } from "@chakra-ui/react";
 
 const AdminPost = () => {
     return (
@@ -27,21 +27,27 @@ const AdminPost = () => {
 function PostList() {
     const { user } = useContext(UserContext);
     const ref = collection(db, 'users', user.uid, 'posts');
-    const q = query(ref, orderBy('createdAt', 'desc'), limit(5));
+    const q = query(ref, orderBy('createdAt', 'desc'));
     const [querySnapshot] = useCollection(q)
 
     const posts = querySnapshot?.docs.map(doc => doc.data());
 
     return (
         <>
-            <section
-                className={styles.container_form}
+            <Container
+                py={6}
+                alignContent={'center'}
             >
-                <h1>New post</h1>
+                <Text textAlign={'center'} fontWeight={'bold'} fontSize={'4xl'}>Create new post</Text>
                 <CreateNewPost />
-            </section>
-            <h3 className="center">Last five posts</h3>
-            <PostFeed posts={posts} admin />
+            </Container>
+            {
+                posts?.length === 0 ? (
+                    <Text textAlign={'center'} fontSize={'xl'}>You don't have any post 😣</Text>
+                ) : (
+                    <Feed posts={posts} admin />
+                )
+            }
         </>
     )
 }
@@ -80,19 +86,31 @@ function CreateNewPost() {
     }
 
     return (
-        <form
+        <Box
+            as="form"
             onSubmit={createPost}
+            py={'6'}
         >
-            <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder='Your article name'
-                className={styles.input}
-            />
-            <button type="submit" disabled={!isValid} className={styles.btn_new}>
-                Create Post
-            </button>
-        </form>
+            <FormControl>
+                <Input
+                    id='text'
+                    type='text'
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder='New post title here...'
+                />
+                <Flex
+                    justifyContent={'flex-end'}
+                >
+                    <Button
+                        mt={'3'}
+                        type="submit"
+                        disabled={!isValid}
+                        colorScheme={'facebook'}
+                    >Create</Button>
+                </Flex>
+            </FormControl>
+        </Box>
     )
 }
 

@@ -1,18 +1,23 @@
-import Navbar from '../components/Navbar'
-import '../styles/globals.css'
+import Nav from '../components/Nav'
+import '../styles/index.css'
 import { Toaster } from 'react-hot-toast'
 import { UserContext } from '../lib/context'
 import { useUserData } from '../lib/hook'
+import { ChakraProvider, Container } from '@chakra-ui/react';
 
 function MyApp({ Component, pageProps }) {
   const userData = useUserData();
 
   return (
-    <UserContext.Provider value={userData}>
-        <Navbar />
-        <Component {...pageProps} />
+    <ChakraProvider>
+      <UserContext.Provider value={userData}>
+        <Nav />
+        <Container maxW={'container.xl'} py={'10'}>
+          <Component {...pageProps} />
+        </Container>
         <Toaster />
-    </UserContext.Provider>
+      </UserContext.Provider>
+    </ChakraProvider>
   )
 }
 

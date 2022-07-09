@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { collectionGroup, getDocs, limit, startAfter, where, orderBy, query, collection } from 'firebase/firestore';
+import { collectionGroup, getDocs, limit, startAfter, where, orderBy, query } from 'firebase/firestore';
 import { db, fromMillis, postToJSON } from '../lib/firebase';
-import PostFeed from '../components/PostFeed';
-import Loader from '../components/Loader';
+import Feed from '../components/Feed';
 import Metatags from '../components/Metatags';
+import { Button, Spinner, Stack, Text } from '@chakra-ui/react';
 
 const LIMIT = 10;
 
@@ -21,7 +21,7 @@ export async function getServerSideProps(context) {
   return { props: { posts } }
 }
 
-export default function Home(props) {
+const Home = props => {
   const [posts, setPosts] = useState(props.posts);
   const [loading, setLoading] = useState(false);
   const [postsEnd, setPostsEnd] = useState(false);
@@ -41,7 +41,6 @@ export default function Home(props) {
     );
 
     const newPosts = (await getDocs(q)).docs.map(doc => doc.data())
-    console.log(newPosts);
 
     setPosts(posts.concat(newPosts));
     setLoading(false);
@@ -58,14 +57,24 @@ export default function Home(props) {
         description='Feed, all pots from blog community'
       />
       <main>
-        <PostFeed posts={posts} />
+        <Feed posts={posts} />
 
-        <section className='center'>
-          {!loading && !postsEnd && <button onClick={getMorePosts}>Load more</button>}
-          <Loader show={loading} />
-          {postsEnd && <p>There are no more posts 😣</p>}
-        </section>
+        <Stack align={'center'} py={'6'}>
+          {
+            !loading && !postsEnd &&
+            <Button
+              colorScheme='blue'
+              onClick={getMorePosts}
+            >
+              Load more
+            </Button>
+          }
+          {loading && <Spinner />}
+          {postsEnd && <Text color={'gray.700'} fontSize={'lg'}>There are no more posts 😣</Text>}
+        </Stack>
       </main>
     </>
   )
 }
+
+export default Home;

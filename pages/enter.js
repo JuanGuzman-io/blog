@@ -1,37 +1,48 @@
-import { getRedirectResult, signInWithPopup, signInWithRedirect } from "firebase/auth";
-import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
+import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import { FaFacebook, FaGoogle, FaTwitter } from "react-icons/fa";
+import { getRedirectResult, signInWithRedirect } from "firebase/auth";
+import { doc, getDoc, writeBatch } from "firebase/firestore";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { UserContext } from "../lib/context";
 import { auth, db, facebookAuthProvider, googleAuthProvider, twitterAuthProvider } from "../lib/firebase";
+import Metatags from "../components/Metatags";
 
 const Enter = ({ }) => {
     const { user, username } = useContext(UserContext);
-    const router = useRouter();
 
     return (
-        <main className="center">
-            {
-                user ?
-                    username ?
-                        <Redirect />
+        <>
+            <Metatags title="Blog - Enter" description='Enter to the Blog community' />
+            <main>
+                {
+                    user ?
+                        username ?
+                            <Redirect />
+                            :
+                            <UsernameForm />
                         :
-                        <UsernameForm />
-                    :
-                    <div className="flex-c">
-                        <h1>Welcome to the Blog community</h1>
-                        <div className="btn-container">
-                            <SignInGoogle />
-                            <SignInTwitter />
-                            <SignInFacebook />
-                        </div>
-                        <h3>Have a password? Continue with your Email</h3>
-                        <SignInWithEmail />
-                    </div>
-            }
-        </main>
+                        <Box
+                            maxW={'xl'}
+                            margin={'0 auto'}
+                        >
+                            <Heading py={6} textAlign={'center'} fontWeight={'bold'} fontSize={'4xl'}>Welcome to the Blog community</Heading>
+                            <VStack
+                                pb={6}
+                                spacing={'1.25rem'}
+                            >
+                                <SignInGoogle />
+                                <SignInTwitter />
+                                <SignInFacebook />
+                            </VStack>
+                            <Text py={6} textAlign={'center'} fontWeight={'bold'} fontSize={'2xl'}>Have a password? Continue with your Email</Text>
+                            <SignInWithEmail />
+                        </Box>
+                }
+            </main>
+        </>
     );
 }
 
@@ -41,9 +52,9 @@ function SignInGoogle() {
     };
 
     return (
-        <button className="btn-google" onClick={signInWithGoogle}>
-            <img src={'/google.png'} alt="Google" /> Sign in with Google
-        </button>
+        <Button px={6} py={8} colorScheme='red' width={'100%'} onClick={signInWithGoogle} leftIcon={<FaGoogle />}>
+            Sign in with Google
+        </Button>
     );
 }
 
@@ -65,9 +76,9 @@ function SignInTwitter() {
     }
 
     return (
-        <button className="btn-twitter" onClick={signInWithTwitter}>
-            <img src='/twitter.png' alt="Twitter" /> Sign in with Twitter
-        </button>
+        <Button px={6} py={8} colorScheme='twitter' width={'100%'} onClick={signInWithTwitter} leftIcon={<FaTwitter />}>
+            Sign in with Twitter
+        </Button>
     )
 }
 
@@ -83,34 +94,41 @@ function SignInFacebook() {
             });
     }
     return (
-        <button className="btn-facebook" onClick={signInWithFacebook}>
-            <img src={"/facebook.webp"} alt="Facebook" /> Sign in with Facebook
-        </button>
+        <Button px={6} py={8} colorScheme='facebook' width={'100%'} onClick={signInWithFacebook} leftIcon={<FaFacebook />}>
+            Sign in with Facebook
+        </Button>
     )
 }
 
 function SignInWithEmail() {
     return (
-        <div
-            className="form-container"
+        <Container
+            as={'form'}
+            maxW={'xl'}
         >
-            <form
+            <FormControl
                 noValidate
             >
-                <div className="input-container">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" />
-                </div>
-                <div className="input-container">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" />
-                </div>
-                <button
-                    className="btn-container btn-blue"
-                    type="submit"
-                >Continue</button>
-            </form>
-        </div>
+                <FormControl mb={4}>
+                    <FormLabel htmlFor='email'>Email</FormLabel>
+                    <Input type={'email'} name='email' id='email' placeholder='johndoe@email.com' />
+                </FormControl>
+                <FormControl mb={4}>
+                    <FormLabel htmlFor='password'>Password</FormLabel>
+                    <Input type={'password'} name='password' id='password' placeholder='··········' />
+                </FormControl>
+                <Flex
+                    justifyContent={'flex-end'}
+                >
+                    <Button
+                        type='submit'
+                        bg={'#000'}
+                        color={'white'}
+                        _hover={{ bg: '#000', textDecoration: 'underline' }}
+                    >Enter</Button>
+                </Flex>
+            </FormControl>
+        </Container>
     )
 }
 
@@ -124,7 +142,7 @@ function Redirect() {
         }
     }, [user, username]);
 
-    return <p>Redirecting...</p>
+    return <Text fontWeight={'700'} textAlign={'center'}>Redirecting...</Text>
 }
 
 function UsernameForm() {
@@ -182,44 +200,49 @@ function UsernameForm() {
 
     return (
         !username && (
-            <section>
-                <h1>Create username,</h1>
-                <p>Please enter a valid username to create an account.</p>
+            <Box
+                maxW={'xl'}
+                margin={'0 auto'}
+            >
+                <Heading mb={4}>Create username,</Heading>
+                <Text mb={4} fontSize={'large'}>Please enter a valid username to create an account.</Text>
                 <form
                     onSubmit={onSubmit}
-                    className={'form-username'}
                 >
-                    <div
-                        className='input-container'
-                    >
-                        <input
-                            name='username'
+                    <FormControl>
+                        <Input
+                            type={'text'}
                             placeholder='johndoe123'
                             value={formValue}
                             onChange={onChange}
                         />
                         <ValidationMessage username={formValue} isValid={isValid} load={load} />
-                    </div>
-                    <button
-                        type='submit'
-                        className='btn-black'
-                        disabled={!isValid}
-                    >
-                        Choose
-                    </button>
+                        <Flex
+                            justifyContent={'flex-end'}
+                        >
+                            <Button
+                                type='submit'
+                                disabled={!isValid}
+                                bg={'#000'}
+                                color={'white'}
+                                _hover={{ bg: '#000', textDecoration: 'underline' }}
+                                mt={'4'}
+                            >Choose</Button>
+                        </Flex>
+                    </FormControl>
                 </form>
-            </section>
+            </Box>
         )
     )
 }
 
 function ValidationMessage({ username, isValid, load }) {
     if (load) {
-        return <p>Validate...</p>;
+        return <Text textColor={'GrayText'} mt={4}>Validate...</Text>;
     } else if (isValid) {
-        return <p className='text-success'>{username} is valid!</p>
+        return <Text textColor={'green.600'} mt={4} fontWeight={'black'}>{username} is valid!</Text>
     } else if (username && !isValid) {
-        return <p className='text-danger'>{username} already has taken or is too short!</p>
+        return <Text textColor={'green.600'} mt={4} fontWeight={'black'}>{username} already has taken or is too short!</Text>
     } else {
         return <></>;
 

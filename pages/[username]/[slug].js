@@ -4,6 +4,7 @@ import { db, getUserWithUsername, postToJSON } from "../../lib/firebase";
 import PostContent from '../../components/PostContent'
 import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import { BiUpArrow } from "react-icons/bi";
+import Metatags from '../../components/Metatags';
 
 export async function getStaticProps({ params }) {
     const { username, slug } = params;
@@ -51,30 +52,33 @@ const UserPost = (props) => {
 
     const post = realtimePost || props.post;
     return (
-        <Container
-            maxW={'100%'}
-        >
-            <Flex
-                justifyContent={'space-between'}
-                alignItems={'start'}
-                flexWrap={'wrap-reverse'}
+        <>
+            <Metatags title={`${post?.title} - @${post?.username}`} />
+            <Container
+                maxW={'100%'}
             >
-                <Box
-                    width={'10%'}
-                    padding={'1rem'}
+                <Flex
+                    justifyContent={'space-between'}
+                    alignItems={'start'}
+                    flexWrap={'wrap'}
                 >
-                    <Text
-                        display={'flex'}
-                        alignItems={'center'}
-                    ><BiUpArrow /></Text>
-                </Box>
-                <Box
-                    width={'90%'}
-                >
-                    <PostContent post={post} />
-                </Box>
-            </Flex>
-        </Container>
+                    <Box
+                        padding={'1rem'}
+                        width={'10%'}
+                    >
+                        <Text
+                            display={'flex'}
+                            alignItems={'center'}
+                        ><BiUpArrow /></Text>
+                    </Box>
+                    <Box
+                        width={'100%'}
+                    >
+                        <PostContent post={post} />
+                    </Box>
+                </Flex>
+            </Container>
+        </>
     );
 }
 

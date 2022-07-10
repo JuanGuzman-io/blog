@@ -54,7 +54,13 @@ function PostList({ post, admin = false }) {
                                     href={`/${post.username}`}
                                 >
                                     <a>
-                                        <Text fontWeight={600}>@{post.username}</Text>
+                                        <Flex
+                                            gap={1}
+                                        >
+                                            <Text fontWeight={600}>{post.displayName}</Text>
+                                            {'·'}
+                                            <Text fontWeight={200}>@{post.username}</Text>
+                                        </Flex>
                                     </a>
                                 </Link>
                                 <Box color={'gray.500'}>

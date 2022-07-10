@@ -1,4 +1,4 @@
-import { collection, doc, limit, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { useContext, useState } from "react";
 import AuthCheck from "../../components/AuthCheck";
 import { UserContext } from "../../lib/context";
@@ -63,6 +63,7 @@ function CreateNewPost() {
         e.preventDefault();
         const uid = auth.currentUser.uid;
         const authorImage = auth.currentUser.photoURL;
+        const displayName = auth.currentUser.displayName;
         const ref = doc(db, 'users', uid, 'posts', slug);
 
         const data = {
@@ -71,6 +72,7 @@ function CreateNewPost() {
             uid,
             username,
             authorImage,
+            displayName,
             published: false,
             content: '# hello world!',
             createdAt: serverTimestamp(),

@@ -6,18 +6,17 @@ import {
     Avatar,
     useColorModeValue,
     Flex,
-    Spacer,
-    Button,
+    Image,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
-import style from '../styles/Content.module.css'
 
 const PostContent = ({ post }) => {
     const createdAt = typeof post?.createdAt === 'number' ? new Date(post.createdAt) : post.createdAt.toDate();
 
     return (
         <Center py={4}>
+
             <Box
                 // maxW={'container.md'}
                 w={'full'}
@@ -25,12 +24,19 @@ const PostContent = ({ post }) => {
                 rounded={'md'}
                 borderWidth={'0.0625rem'}
                 shadow={'sm'}
-                p={7}
                 overflow={'hidden'}
             >
-                <Stack mb={6} direction={'row'} spacing={4} align={'center'}>
+                <Box
+                    backgroundImage={`url(${post?.imageURL})`}
+                    width={'full'}
+                    margin={'0 auto'}
+                    height={'30vh'}
+                    backgroundSize={'cover'}
+                    backgroundPosition={'center center'}
+                />
+                <Stack mb={6} direction={'row'} spacing={4} align={'center'} px={7} py={4}>
                     <Link
-                        href={`/${post.username}`}
+                        href={`/${post?.username}`}
                     >
                         <a>
                             <Avatar
@@ -41,24 +47,32 @@ const PostContent = ({ post }) => {
                     </Link>
                     <Stack direction={'column'} spacing={0} fontSize={'sm'}>
                         <Link
-                            href={`/${post.username}`}
+                            href={`/${post?.username}`}
                         >
                             <a>
-                                <Text fontWeight={600}>@{post.username}</Text>
+                                <Flex
+                                    flexDirection={'column'}
+                                >
+                                    <Text fontWeight={600}>{post.displayName}</Text>
+                                    <Text fontWeight={200}>@{post.username}</Text>
+                                </Flex>
                             </a>
                         </Link>
                         <Text textColor={'gray.500'}>{new Date(createdAt).toDateString()}</Text>
                     </Stack>
                 </Stack>
-                <Stack>
+                <Stack px={7} pb={7}>
                     <Flex
                         justifyContent={'space-between'}
                         alignItems={'center'}
                     >
                         <Stack>
-                            <h2 className='title-card'>
-                                <a>{post.title}</a>
-                            </h2>
+                            <Text
+                                fontWeight={'bold'}
+                                fontSize={'5xl'}
+                            >
+                                {post?.title}
+                            </Text>
                             <ReactMarkdown>{post?.content}</ReactMarkdown>
                         </Stack>
                     </Flex>

@@ -67,7 +67,7 @@ const UserPost = (props) => {
                     alignItems={'start'}
                     flexWrap={'wrap'}
                 >
-                    <Box
+                    {/* <Box
                         padding={'1rem'}
                         width={'10%'}
                     >
@@ -80,14 +80,14 @@ const UserPost = (props) => {
                                         color={'white'}
                                         _hover={{ bg: '#000', textDecoration: 'underline' }}
                                         mt={'4'}
-                                    >Enter</Button>
+                                    >Enter to interact</Button>
                                 </Link>
                             }
                         >
 
-                            {/* <UpButton postRef={postRef} /> */}
+                            <UpButton postRef={post} />
                         </AuthCheck>
-                    </Box>
+                    </Box> */}
                     <Box
                         width={'100%'}
                     >

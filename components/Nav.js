@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { useContext } from "react";
-import { useRouter } from "next/router";
 import { UserContext } from "../lib/context";
-
 import {
     Box,
     Flex,
@@ -21,7 +19,6 @@ import {
     Container
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { auth } from "../lib/firebase";
 
 
 export default function Simple() {
@@ -138,14 +135,9 @@ export default function Simple() {
                                         Write post
                                     </Link>
                                 ) : (
-                                    <>
-                                        <Link href={'/enter'}>
-                                            Log In
-                                        </Link>
-                                        <Link href={'/signup'}>
-                                            Create account
-                                        </Link>
-                                    </>
+                                    <Link href={'/enter'}>
+                                        Log In
+                                    </Link>
                                 )
                             }
                         </Stack>

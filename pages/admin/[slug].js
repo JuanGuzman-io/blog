@@ -1,4 +1,3 @@
-import style from '../../styles/Admin.module.css';
 import AuthCheck from '../../components/AuthCheck';
 import Metatags from '../../components/Metatags';
 import { db, auth, storage } from '../../lib/firebase';
@@ -7,13 +6,12 @@ import { doc, updateDoc, serverTimestamp, deleteDoc } from 'firebase/firestore';
 import { useState, useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { UserContext } from '../../lib/context';
-import Link from 'next/link';
 
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useForm } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 import toast from 'react-hot-toast';
-import { Box, Button, Checkbox, Code, Container, Flex, FormControl, FormHelperText, Heading, Image, Spinner, Stack, StackDivider, Text, Textarea, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Progress, } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Code, Container, Flex, FormControl, FormHelperText, Heading, Image, Spinner, Stack, StackDivider, Text, Textarea, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Progress, Tooltip, } from '@chakra-ui/react';
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
 import { BiCamera } from 'react-icons/bi';
 
@@ -137,18 +135,20 @@ function PostForm({ postRef, defaultValues, preview }) {
                 {
                     !upload && !imageURL ? (
                         <>
-                            <label
-                                htmlFor='image'
-                                className='custom-file-upload'
-                            >
-                                <BiCamera /> Upload image
-                                <input
-                                    id='image'
-                                    type="file"
-                                    onChange={uploadFile}
-                                    accept="image/*"
-                                />
-                            </label>
+                            <Tooltip label={'Use a ratio of 100:42 for best results'}>
+                                <label
+                                    htmlFor='image'
+                                    className='custom-file-upload'
+                                >
+                                    <BiCamera /> Upload image
+                                    <input
+                                        id='image'
+                                        type="file"
+                                        onChange={uploadFile}
+                                        accept="image/*"
+                                    />
+                                </label>
+                            </Tooltip>
                         </>
                     ) : (
                         <>
@@ -234,7 +234,7 @@ function DeletePost({ postRef }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
 
-    const deletePost = async () => {
+    const handleDelete = async () => {
         await deleteDoc(postRef);
         router.push('/');
         toast('Eliminada correctamente', { icon: '🗑️' });
@@ -265,7 +265,7 @@ function DeletePost({ postRef }) {
                             <Button ref={cancelRef} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme='red' onClick={deletePost} ml={3}>
+                            <Button colorScheme='red' onClick={handleDelete} ml={3}>
                                 Delete
                             </Button>
                         </AlertDialogFooter>

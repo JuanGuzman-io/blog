@@ -1,6 +1,6 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { deleteUser, updateProfile } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -33,11 +33,6 @@ const Settings = () => {
 function FormProfile() {
     const { user } = useContext(UserContext);
     const [name, setName] = useState('');
-    const postRef = doc(
-        db,
-        'users',
-        user?.uid
-    );
 
     useEffect(() => {
         setName(user?.displayName);
@@ -49,6 +44,11 @@ function FormProfile() {
 
     const handleUpdate = async e => {
         e.preventDefault();
+        const postRef = doc(
+            db,
+            'users',
+            user?.uid
+        );
 
         updateProfile(auth.currentUser, {
             displayName: name
@@ -102,17 +102,28 @@ function FormProfile() {
 function DeleteAccount() {
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { user, username } = useContext(UserContext);
     const cancelRef = useRef();
-    const user = auth.currentUser;
 
-    const handleDelete = () => {
-        deleteUser(user).then(() => {
+    const handleDelete = async () => {
+        const userRef = auth.currentUser;
+        const userDoc = doc(db, 'users', user.uid);
+        const usernameDoc = doc(db, 'username', username);
+        
+        const batch = writeBatch(db);
+
+        batch.delete(userDoc);
+        batch.delete(usernameDoc);
+
+        await batch.commit();
+        
+        deleteUser(userRef).then(() => {
             toast.success('The account has been deleted successfully!')
-            router.push('/enter')
         }).catch((error) => {
             toast.error('Something gone wrong!')
-            console.log(error);
         });
+
+        router.push('/enter')
     }
 
     return (

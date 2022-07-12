@@ -89,15 +89,15 @@ function PostList({ post, admin = false }) {
                             </Stack>
                         </Stack>
                         <Spacer />
-                        <Text
+                        {/* <Text
                             textTransform={'uppercase'}
                             fontWeight={800}
                             fontSize={'sm'}
                             letterSpacing={1.1}
                             
                         >
-                            <BiUpArrow /> {post.upCount}
-                        </Text>
+                            <BiUpArrow /> {post.upCount || 0}
+                        </Text> */}
                     </Flex>
                     <Stack>
                         <Flex

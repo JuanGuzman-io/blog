@@ -1,11 +1,10 @@
 import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, InputGroup, InputLeftAddon, Text, VStack } from "@chakra-ui/react";
 import { FaFacebook, FaGoogle, FaTwitter } from "react-icons/fa";
-import { getRedirectResult, signInWithRedirect } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, writeBatch } from "firebase/firestore";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { UserContext } from "../lib/context";
 import { auth, db, facebookAuthProvider, googleAuthProvider, twitterAuthProvider } from "../lib/firebase";
 import Metatags from "../components/Metatags";
@@ -48,7 +47,7 @@ const Enter = ({ }) => {
 
 function SignInGoogle() {
     const signInWithGoogle = async () => {
-        await signInWithRedirect(auth, googleAuthProvider);
+        await signInWithPopup(auth, googleAuthProvider);
     };
 
     return (
@@ -60,23 +59,11 @@ function SignInGoogle() {
 
 function SignInTwitter() {
     const signInWithTwitter = async () => {
-        await signInWithRedirect(auth, twitterAuthProvider);
-        getRedirectResult(auth)
-            .then(result => {
-                const userRef = result.user;
-
-                if (userRef) {
-                    toast('Welcome!')
-                }
-            }).catch(error => {
-                const errorMessage = error.message;
-                toast('Something gone wrong!', errorMessage);
-                console.log(errorMessage);
-            });
+        await signInWithPopup(auth, twitterAuthProvider);
     }
 
     return (
-        <Button px={6} py={8} colorScheme='twitter' width={'100%'} onClick={signInWithTwitter} leftIcon={<FaTwitter />}>
+        <Button px={6} py={8} colorScheme='twitter' width={'100%'} leftIcon={<FaTwitter />}>
             Sign in with Twitter
         </Button>
     )
@@ -84,14 +71,7 @@ function SignInTwitter() {
 
 function SignInFacebook() {
     const signInWithFacebook = async () => {
-        await signInWithRedirect(auth, facebookAuthProvider);
-        getRedirectResult(auth)
-            .then(() => {
-                toast('Welcome!');
-            }).catch(error => {
-                const errorMessage = error.message;
-                toast('Something gone wrong!', errorMessage);
-            });
+        await signInWithPopup(auth, facebookAuthProvider);
     }
     return (
         <Button px={6} py={8} colorScheme='facebook' width={'100%'} onClick={signInWithFacebook} leftIcon={<FaFacebook />}>

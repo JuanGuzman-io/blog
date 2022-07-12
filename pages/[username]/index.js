@@ -43,7 +43,7 @@ const UserProfilePage = ({ user, posts }) => {
                     posts?.length === 0 ? (
                         <Text textAlign={'center'} fontSize={'xl'}>There are no posts 😣</Text>
                     ) : (
-                        <Feed posts={posts} admin />
+                        <Feed posts={posts} />
                     )
                 }
             </Stack>

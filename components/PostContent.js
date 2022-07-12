@@ -6,7 +6,6 @@ import {
     Avatar,
     useColorModeValue,
     Flex,
-    Image,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
@@ -18,7 +17,6 @@ const PostContent = ({ post }) => {
         <Center py={4}>
 
             <Box
-                // maxW={'container.md'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.900')}
                 rounded={'md'}

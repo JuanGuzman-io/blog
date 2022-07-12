@@ -12,7 +12,7 @@ import {
 import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { BiWorld, BiLockAlt } from "react-icons/bi";
+import { BiWorld, BiLockAlt, BiUpArrow } from "react-icons/bi";
 
 const Feed = ({ posts, admin }) => {
     return posts ? posts.map(post => <PostList post={post} key={post.slug} admin={admin} />) : null;
@@ -45,7 +45,7 @@ function PostList({ post, admin = false }) {
                                 <a>
                                     <Avatar
                                         src={post.authorImage || '/profile.png'}
-                                        name={post.username}
+                                        name={post.displayName}
                                     />
                                 </a>
                             </Link>
@@ -81,7 +81,7 @@ function PostList({ post, admin = false }) {
                                             </>
                                         ) : (
                                             <>
-                                                {formatDistanceToNowStrict(new Date(post.createdAt))}
+                                                {formatDistanceToNowStrict(new Date(post.createdAt))} ago
                                             </>
                                         )
                                     }
@@ -93,8 +93,10 @@ function PostList({ post, admin = false }) {
                             textTransform={'uppercase'}
                             fontWeight={800}
                             fontSize={'sm'}
-                            letterSpacing={1.1}>
-                            🔼 {post.upCount}
+                            letterSpacing={1.1}
+                            
+                        >
+                            <BiUpArrow /> {post.upCount}
                         </Text>
                     </Flex>
                     <Stack>

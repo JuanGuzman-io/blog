@@ -2,9 +2,13 @@ import { collection, collectionGroup, doc, getDoc, getDocs } from "firebase/fire
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { db, getUserWithUsername, postToJSON } from "../../lib/firebase";
 import PostContent from '../../components/PostContent'
-import { Box, Container, Flex, Text } from "@chakra-ui/react";
-import { BiUpArrow } from "react-icons/bi";
+import { Box, Button, Container, Flex } from "@chakra-ui/react";
 import Metatags from '../../components/Metatags';
+import UpButton from "../../components/UpButton";
+import AuthCheck from "../../components/AuthCheck";
+import Link from "next/link";
+import { useContext } from "react";
+import { UserContext } from "../../lib/context";
 
 export async function getStaticProps({ params }) {
     const { username, slug } = params;
@@ -47,10 +51,11 @@ export async function getStaticPaths() {
 };
 
 const UserPost = (props) => {
+    const { user: currentUser } = useContext(UserContext);
     const postRef = doc(db, props.path);
     const [realtimePost] = useDocumentData(postRef);
-
     const post = realtimePost || props.post;
+
     return (
         <>
             <Metatags title={`${post?.title} - @${post?.username}`} />
@@ -66,10 +71,22 @@ const UserPost = (props) => {
                         padding={'1rem'}
                         width={'10%'}
                     >
-                        <Text
-                            display={'flex'}
-                            alignItems={'center'}
-                        ><BiUpArrow /></Text>
+                        <AuthCheck
+                            fallback={
+                                <Link href={'/enter'}>
+                                    <Button
+                                        type='submit'
+                                        bg={'#000'}
+                                        color={'white'}
+                                        _hover={{ bg: '#000', textDecoration: 'underline' }}
+                                        mt={'4'}
+                                    >Enter</Button>
+                                </Link>
+                            }
+                        >
+
+                            {/* <UpButton postRef={postRef} /> */}
+                        </AuthCheck>
                     </Box>
                     <Box
                         width={'100%'}
@@ -77,6 +94,28 @@ const UserPost = (props) => {
                         <PostContent post={post} />
                     </Box>
                 </Flex>
+                {
+                    currentUser?.uid === post.uid && (
+                        <Flex
+                            justifyContent={'flex-end'}
+                        >
+                            <Link href={`/admin/${post.slug}`}>
+                                <Button
+                                    bg={'blue.500'}
+                                    color={'white'}
+                                    rounded={'xl'}
+                                    _hover={{
+                                        bg: 'blue.700',
+                                    }}
+                                    _focus={{
+                                        bg: 'blue.700',
+                                    }}>
+                                    Edit
+                                </Button>
+                            </Link>
+                        </Flex>
+                    )
+                }
             </Container>
         </>
     );

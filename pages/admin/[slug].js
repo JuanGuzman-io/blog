@@ -4,7 +4,7 @@ import Metatags from '../../components/Metatags';
 import { db, auth, storage } from '../../lib/firebase';
 import { doc, updateDoc, serverTimestamp, deleteDoc } from 'firebase/firestore';
 
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { UserContext } from '../../lib/context';
 import Link from 'next/link';
@@ -75,6 +75,7 @@ function PostForm({ postRef, defaultValues, preview }) {
 
     if (defaultValues?.imageURL) {
         url = defaultValues?.imageURL;
+        console.log(url);
     }
 
     const [upload, setUpload] = useState(false);

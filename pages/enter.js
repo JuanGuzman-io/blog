@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, InputGroup, InputLeftAddon, Text, VStack } from "@chakra-ui/react";
 import { FaFacebook, FaGoogle, FaTwitter } from "react-icons/fa";
 import { getRedirectResult, signInWithRedirect } from "firebase/auth";
 import { doc, getDoc, writeBatch } from "firebase/firestore";
@@ -188,14 +188,16 @@ function UsernameForm() {
     const checkUsername = useCallback(
         debounce(async (username) => {
             if (username.length >= 3) {
-                const ref = doc(db, (`usernames/${username}`));
-                const { docSnap } = await getDoc(ref);
-                console.log('Query execute');
+                const ref = doc(db, 'username', username);
+                const docSnap = await getDoc(ref);
+                if (docSnap.exists()) {
+                    setIsValid(false);
+                } else {
+                    setIsValid(true);
+                }
                 setLoad(false);
-                setIsValid(!docSnap);
             }
-        }, 500),
-        []
+        }, 500), []
     );
 
     return (
@@ -210,12 +212,15 @@ function UsernameForm() {
                     onSubmit={onSubmit}
                 >
                     <FormControl>
-                        <Input
-                            type={'text'}
-                            placeholder='johndoe123'
-                            value={formValue}
-                            onChange={onChange}
-                        />
+                        <InputGroup>
+                            <InputLeftAddon children='@' />
+                            <Input
+                                type={'text'}
+                                placeholder='johndoe123'
+                                value={formValue}
+                                onChange={onChange}
+                            />
+                        </InputGroup>
                         <ValidationMessage username={formValue} isValid={isValid} load={load} />
                         <Flex
                             justifyContent={'flex-end'}
@@ -238,11 +243,11 @@ function UsernameForm() {
 
 function ValidationMessage({ username, isValid, load }) {
     if (load) {
-        return <Text textColor={'GrayText'} mt={4}>Validate...</Text>;
+        return <Text textColor={'GrayText'} mt={4}>Validating...</Text>;
     } else if (isValid) {
         return <Text textColor={'green.600'} mt={4} fontWeight={'black'}>{username} is valid!</Text>
     } else if (username && !isValid) {
-        return <Text textColor={'green.600'} mt={4} fontWeight={'black'}>{username} already has taken or is too short!</Text>
+        return <Text textColor={'red.600'} mt={4} fontWeight={'black'}>{username} already has taken or is too short!</Text>
     } else {
         return <></>;
 

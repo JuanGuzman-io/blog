@@ -118,8 +118,8 @@ function Redirect() {
 
     useEffect(() => {
         if (user && username) {
-            // eslint-disable-next-line
             router.push("/");
+            // eslint-disable-next-line
         }
     }, [user, username]);
 

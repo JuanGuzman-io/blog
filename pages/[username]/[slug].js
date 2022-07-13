@@ -4,8 +4,8 @@ import { db, getUserWithUsername, postToJSON } from "../../lib/firebase";
 import PostContent from "../../components/PostContent"
 import { Box, Button, Container, Flex } from "@chakra-ui/react";
 import Metatags from "../../components/Metatags";
-import UpButton from "../../components/UpButton";
-import AuthCheck from "../../components/AuthCheck";
+// import UpButton from "../../components/UpButton";
+// import AuthCheck from "../../components/AuthCheck";
 import Link from "next/link";
 import { useContext } from "react";
 import { UserContext } from "../../lib/context";

@@ -119,8 +119,8 @@ function Redirect() {
     useEffect(() => {
         if (user && username) {
             router.push("/");
-            // eslint-disable-next-line
         }
+        // eslint-disable-next-line
     }, [user, username]);
 
     return <Text fontWeight={"700"} textAlign={"center"}>Redirecting...</Text>
@@ -196,7 +196,6 @@ function UsernameForm() {
                 >
                     <FormControl>
                         <InputGroup>
-                            <InputLeftAddon children="@" />
                             <Input
                                 type={"text"}
                                 placeholder="johndoe123"

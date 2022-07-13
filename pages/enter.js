@@ -14,7 +14,7 @@ const Enter = ({ }) => {
 
     return (
         <>
-            <Metatags title="Blog - Enter" description='Enter to the Blog community' />
+            <Metatags title="Blog - Enter" description="Enter to the Blog community" />
             <main>
                 {
                     user ?
@@ -24,19 +24,19 @@ const Enter = ({ }) => {
                             <UsernameForm />
                         :
                         <Box
-                            maxW={'xl'}
-                            margin={'0 auto'}
+                            maxW={"xl"}
+                            margin={"0 auto"}
                         >
-                            <Heading py={6} textAlign={'center'} fontWeight={'bold'} fontSize={'4xl'}>Welcome to the Blog community</Heading>
+                            <Heading py={6} textAlign={"center"} fontWeight={"bold"} fontSize={"4xl"}>Welcome to the Blog community</Heading>
                             <VStack
                                 pb={6}
-                                spacing={'1.25rem'}
+                                spacing={"1.25rem"}
                             >
                                 <SignInGoogle />
                                 <SignInTwitter />
                                 <SignInFacebook />
                             </VStack>
-                            <Text py={6} textAlign={'center'} fontWeight={'bold'} fontSize={'2xl'}>Have a password? Continue with your Email</Text>
+                            <Text py={6} textAlign={"center"} fontWeight={"bold"} fontSize={"2xl"}>Have a password? Continue with your Email</Text>
                             <SignInWithEmail />
                         </Box>
                 }
@@ -51,7 +51,7 @@ function SignInGoogle() {
     };
 
     return (
-        <Button px={6} py={8} colorScheme='red' width={'100%'} onClick={signInWithGoogle} leftIcon={<FaGoogle />}>
+        <Button px={6} py={8} colorScheme="red" width={"100%"} onClick={signInWithGoogle} leftIcon={<FaGoogle />}>
             Sign in with Google
         </Button>
     );
@@ -63,7 +63,7 @@ function SignInTwitter() {
     }
 
     return (
-        <Button px={6} py={8} colorScheme='twitter' width={'100%'} leftIcon={<FaTwitter />}>
+        <Button px={6} py={8} colorScheme="twitter" width={"100%"} leftIcon={<FaTwitter />}>
             Sign in with Twitter
         </Button>
     )
@@ -74,7 +74,7 @@ function SignInFacebook() {
         await signInWithPopup(auth, facebookAuthProvider);
     }
     return (
-        <Button px={6} py={8} colorScheme='facebook' width={'100%'} onClick={signInWithFacebook} leftIcon={<FaFacebook />}>
+        <Button px={6} py={8} colorScheme="facebook" width={"100%"} onClick={signInWithFacebook} leftIcon={<FaFacebook />}>
             Sign in with Facebook
         </Button>
     )
@@ -83,28 +83,28 @@ function SignInFacebook() {
 function SignInWithEmail() {
     return (
         <Container
-            as={'form'}
-            maxW={'xl'}
+            as={"form"}
+            maxW={"xl"}
         >
             <FormControl
                 noValidate
             >
                 <FormControl mb={4}>
-                    <FormLabel htmlFor='email'>Email</FormLabel>
-                    <Input type={'email'} name='email' id='email' placeholder='johndoe@email.com' />
+                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <Input type={"email"} name="email" id="email" placeholder="johndoe@email.com" />
                 </FormControl>
                 <FormControl mb={4}>
-                    <FormLabel htmlFor='password'>Password</FormLabel>
-                    <Input type={'password'} name='password' id='password' placeholder='··········' />
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <Input type={"password"} name="password" id="password" placeholder="··········" />
                 </FormControl>
                 <Flex
-                    justifyContent={'flex-end'}
+                    justifyContent={"flex-end"}
                 >
                     <Button
-                        type='submit'
-                        bg={'#000'}
-                        color={'white'}
-                        _hover={{ bg: '#000', textDecoration: 'underline' }}
+                        type="submit"
+                        bg={"#000"}
+                        color={"white"}
+                        _hover={{ bg: "#000", textDecoration: "underline" }}
                     >Enter</Button>
                 </Flex>
             </FormControl>
@@ -119,15 +119,15 @@ function Redirect() {
     useEffect(() => {
         // eslint-disable-next-line
         if (user && username) {
-            router.push('/');
+            router.push("/");
         }
     }, [user, username]);
 
-    return <Text fontWeight={'700'} textAlign={'center'}>Redirecting...</Text>
+    return <Text fontWeight={"700"} textAlign={"center"}>Redirecting...</Text>
 }
 
 function UsernameForm() {
-    const [formValue, setFormValue] = useState('');
+    const [formValue, setFormValue] = useState("");
     const [isValid, setIsValid] = useState(false);
     const [load, setLoad] = useState(false);
 
@@ -135,8 +135,8 @@ function UsernameForm() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const userDoc = doc(db, 'users', user.uid);
-        const usernameDoc = doc(db, 'username', formValue);
+        const userDoc = doc(db, "users", user.uid);
+        const usernameDoc = doc(db, "username", formValue);
 
         const batch = writeBatch(db);
         batch.set(userDoc, { username: formValue, photoURL: user.photoURL, displayName: user.displayName });
@@ -170,7 +170,7 @@ function UsernameForm() {
     const checkUsername = useCallback(
         debounce(async (username) => {
             if (username.length >= 3) {
-                const ref = doc(db, 'username', username);
+                const ref = doc(db, "username", username);
                 const docSnap = await getDoc(ref);
                 if (docSnap.exists()) {
                     setIsValid(false);
@@ -185,35 +185,35 @@ function UsernameForm() {
     return (
         !username && (
             <Box
-                maxW={'xl'}
-                margin={'0 auto'}
+                maxW={"xl"}
+                margin={"0 auto"}
             >
                 <Heading mb={4}>Create username,</Heading>
-                <Text mb={4} fontSize={'large'}>Please enter a valid username to create an account.</Text>
+                <Text mb={4} fontSize={"large"}>Please enter a valid username to create an account.</Text>
                 <form
                     onSubmit={onSubmit}
                 >
                     <FormControl>
                         <InputGroup>
-                            <InputLeftAddon children='@' />
+                            <InputLeftAddon children="@" />
                             <Input
-                                type={'text'}
-                                placeholder='johndoe123'
+                                type={"text"}
+                                placeholder="johndoe123"
                                 value={formValue}
                                 onChange={onChange}
                             />
                         </InputGroup>
                         <ValidationMessage username={formValue} isValid={isValid} load={load} />
                         <Flex
-                            justifyContent={'flex-end'}
+                            justifyContent={"flex-end"}
                         >
                             <Button
-                                type='submit'
+                                type="submit"
                                 disabled={!isValid}
-                                bg={'#000'}
-                                color={'white'}
-                                _hover={{ bg: '#000', textDecoration: 'underline' }}
-                                mt={'4'}
+                                bg={"#000"}
+                                color={"white"}
+                                _hover={{ bg: "#000", textDecoration: "underline" }}
+                                mt={"4"}
                             >Choose</Button>
                         </Flex>
                     </FormControl>
@@ -225,11 +225,11 @@ function UsernameForm() {
 
 function ValidationMessage({ username, isValid, load }) {
     if (load) {
-        return <Text textColor={'GrayText'} mt={4}>Validating...</Text>;
+        return <Text textColor={"GrayText"} mt={4}>Validating...</Text>;
     } else if (isValid) {
-        return <Text textColor={'green.600'} mt={4} fontWeight={'black'}>{username} is valid!</Text>
+        return <Text textColor={"green.600"} mt={4} fontWeight={"black"}>{username} is valid!</Text>
     } else if (username && !isValid) {
-        return <Text textColor={'red.600'} mt={4} fontWeight={'black'}>{username} already has taken or is too short!</Text>
+        return <Text textColor={"red.600"} mt={4} fontWeight={"black"}>{username} already has taken or is too short!</Text>
     } else {
         return <></>;
 

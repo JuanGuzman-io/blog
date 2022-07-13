@@ -15,13 +15,13 @@ const Settings = () => {
         <>
             <Metatags title={`Settings - @${username}`} />
             <Box
-                maxW={'container.xl'}
+                maxW={"container.xl"}
             >
                 <Flex
                     gap={3}
                 >
                     <Heading>Profile settings</Heading>
-                    <Heading color={'blue.500'}>@{username}</Heading>
+                    <Heading color={"blue.500"}>@{username}</Heading>
                 </Flex>
                 <FormProfile />
                 <DeleteAccount />
@@ -32,7 +32,7 @@ const Settings = () => {
 
 function FormProfile() {
     const { user } = useContext(UserContext);
-    const [name, setName] = useState('');
+    const [name, setName] = useState("");
 
     useEffect(() => {
         setName(user?.displayName);
@@ -47,16 +47,16 @@ function FormProfile() {
         e.preventDefault();
         const postRef = doc(
             db,
-            'users',
+            "users",
             user?.uid
         );
 
         updateProfile(auth.currentUser, {
             displayName: name
         }).then(() => {
-            toast.success('The profile has been updated!');
+            toast.success("The profile has been updated!");
         }).catch((error) => {
-            toast.error('Something gone wrong!')
+            toast.error("Something gone wrong!")
             console.log(error);
         });
 
@@ -67,33 +67,33 @@ function FormProfile() {
     return (
 
         <Box
-            maxW={'100%'}
-            w={'full'} deletePost
-            boxShadow={'md'}
-            rounded={'md'}
+            maxW={"100%"}
+            w={"full"} deletePost
+            boxShadow={"md"}
+            rounded={"md"}
             p={6}
             my={6}
-            overflow={'hidden'}
+            overflow={"hidden"}
         >
-            <Text fontSize={'2xl'} fontWeight={'bold'}>User</Text>
+            <Text fontSize={"2xl"} fontWeight={"bold"}>User</Text>
             <Stack
                 as="form"
                 onSubmit={handleUpdate}
-                spacing={'1.5rem'}
+                spacing={"1.5rem"}
                 py={6}
             >
                 <FormControl>
                     <FormLabel>Name</FormLabel>
                     <Input
-                        type={'text'}
-                        name={'name'}
+                        type={"text"}
+                        name={"name"}
                         value={name}
                         onChange={handleChange}
                     />
                 </FormControl>
                 <Button
-                    width={'fit-content'}
-                    type={'submit'}
+                    width={"fit-content"}
+                    type={"submit"}
                 >Save</Button>
             </Stack>
         </Box>
@@ -108,8 +108,8 @@ function DeleteAccount() {
 
     const handleDelete = async () => {
         const userRef = auth.currentUser;
-        const userDoc = doc(db, 'users', user.uid);
-        const usernameDoc = doc(db, 'username', username);
+        const userDoc = doc(db, "users", user.uid);
+        const usernameDoc = doc(db, "username", username);
         
         const batch = writeBatch(db);
 
@@ -119,27 +119,27 @@ function DeleteAccount() {
         await batch.commit();
         
         deleteUser(userRef).then(() => {
-            toast.success('The account has been deleted successfully!')
+            toast.success("The account has been deleted successfully!")
         }).catch((error) => {
-            toast.error('Something gone wrong!')
+            toast.error("Something gone wrong!")
         });
 
-        router.push('/enter')
+        router.push("/enter")
     }
 
     return (
         <Box
-            maxW={'100%'}
-            w={'full'}
-            bg={useColorModeValue('white', 'gray.900')}
-            boxShadow={'md'}
-            rounded={'md'}
+            maxW={"100%"}
+            w={"full"}
+            bg={useColorModeValue("white", "gray.900")}
+            boxShadow={"md"}
+            rounded={"md"}
             p={6}
             my={6}
-            overflow={'hidden'}
+            overflow={"hidden"}
         >
-            <Text fontSize={'2xl'} fontWeight={'bold'}>Delete account</Text>
-            <Button colorScheme='red' onClick={onOpen} my={'6'}>
+            <Text fontSize={"2xl"} fontWeight={"bold"}>Delete account</Text>
+            <Button colorScheme="red" onClick={onOpen} my={"6"}>
                 Delete account
             </Button>
 
@@ -150,19 +150,19 @@ function DeleteAccount() {
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-                        <AlertDialogHeader fontSize={'lg'} fontWeight={'bold'}>
+                        <AlertDialogHeader fontSize={"lg"} fontWeight={"bold"}>
                             Delete account
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            Are you sure? You can't undo this action afterwards.
+                            Are you sure? You can"t undo this action afterwards.
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme='red' onClick={handleDelete} ml={3}>
+                            <Button colorScheme="red" onClick={handleDelete} ml={3}>
                                 Delete
                             </Button>
                         </AlertDialogFooter>

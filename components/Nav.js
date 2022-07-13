@@ -17,8 +17,8 @@ import {
     useColorModeValue,
     Stack,
     Container
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 
 export default function Simple() {
@@ -28,35 +28,35 @@ export default function Simple() {
     const photoURL = user?.photoURL;
 
     return (
-        <Box bg={useColorModeValue('white', 'white.900')} borderWidth={'0.0625rem'}>
-            <Container maxW={'container.xl'}>
-                <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        <Box bg={useColorModeValue("white", "white.900")} borderWidth={"0.0625rem"}>
+            <Container maxW={"container.xl"}>
+                <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
                     <IconButton
-                        size={'md'}
+                        size={"md"}
                         icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                        aria-label={'Open Menu'}
-                        display={{ md: 'none' }}
+                        aria-label={"Open Menu"}
+                        display={{ md: "none" }}
                         onClick={isOpen ? onClose : onOpen}
                     />
-                    <HStack spacing={8} alignItems={'center'}>
+                    <HStack spacing={8} alignItems={"center"}>
                         <Box>
-                            <Link href={'/'}>
+                            <Link href={"/"}>
                                 <button className="btn-logo">Blog</button>
                             </Link>
                         </Box>
                     </HStack>
-                    <Flex alignItems={'center'}>
+                    <Flex alignItems={"center"}>
                         <HStack
-                            as={'nav'}
+                            as={"nav"}
                             spacing={4}
-                            display={{ base: 'none', md: 'flex' }}
-                            me='4'
+                            display={{ base: "none", md: "flex" }}
+                            me="4"
                         >
                             {
                                 username &&
-                                <Link href={'/admin'}>
+                                <Link href={"/admin"}>
                                     <Button
-                                        colorScheme={'facebook'}
+                                        colorScheme={"facebook"}
                                     >
                                         Create post
                                     </Button>
@@ -69,13 +69,13 @@ export default function Simple() {
                                 <Menu>
                                     <MenuButton
                                         as={Button}
-                                        rounded={'full'}
-                                        variant={'link'}
-                                        cursor={'pointer'}
+                                        rounded={"full"}
+                                        variant={"link"}
+                                        cursor={"pointer"}
                                         minW={0}>
                                         <Avatar
-                                            size={'sm'}
-                                            src={photoURL || '/profile.png'}
+                                            size={"sm"}
+                                            src={photoURL || "/profile.png"}
                                             name={user?.displayName}
                                         />
                                     </MenuButton>
@@ -110,32 +110,32 @@ export default function Simple() {
                                         </Link>
                                         <MenuDivider />
                                         <Link
-                                            href={'/signout'}
+                                            href={"/signout"}
                                         >
-                                            <MenuItem color={'red'}>
+                                            <MenuItem color={"red"}>
                                                 Sign out
                                             </MenuItem>
                                         </Link>
                                     </MenuList>
                                 </Menu>
                                 :
-                                <Link href={'/enter'}>
-                                    <Button colorScheme={'blue'} variant={'link'} size={'sm'}>Log In</Button>
+                                <Link href={"/enter"}>
+                                    <Button colorScheme={"blue"} variant={"link"} size={"sm"}>Log In</Button>
                                 </Link>
                         }
                     </Flex>
                 </Flex>
 
                 {isOpen ? (
-                    <Box pb={4} pt={4} display={{ md: 'none' }}>
-                        <Stack as={'nav'} spacing={4}>
+                    <Box pb={4} pt={4} display={{ md: "none" }}>
+                        <Stack as={"nav"} spacing={4}>
                             {
                                 username ? (
-                                    <Link href={'/admin'}>
+                                    <Link href={"/admin"}>
                                         Write post
                                     </Link>
                                 ) : (
-                                    <Link href={'/enter'}>
+                                    <Link href={"/enter"}>
                                         Log In
                                     </Link>
                                 )

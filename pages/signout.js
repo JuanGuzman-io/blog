@@ -8,27 +8,27 @@ const SignOut = () => {
 
     const signOut = () => {
         auth.signOut();
-        toast('See you later!', {
-            icon: '🌝',
+        toast("See you later!", {
+            icon: "🌝",
             style: {
-                border: '1px solid #333',
+                border: "1px solid #333",
             },
         });
-        router.push('/');
+        router.push("/");
     }
 
     return (
         <Box
-            maxW={'sm'}
-            margin={'0 auto'}
+            maxW={"sm"}
+            margin={"0 auto"}
         >
-            <Heading textAlign={'center'} fontSize={'xl'}>Are you sure you want to sign out?</Heading>
+            <Heading textAlign={"center"} fontSize={"xl"}>Are you sure you want to sign out?</Heading>
             <Button
                 onClick={signOut}
-                bg={'#000'}
-                color={'white'}
-                _hover={{ bg: '#000', textDecoration: 'underline' }}
-                width={'100%'}
+                bg={"#000"}
+                color={"white"}
+                _hover={{ bg: "#000", textDecoration: "underline" }}
+                width={"100%"}
                 mt={4}
             >Yes, good bye</Button>
         </Box>

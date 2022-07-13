@@ -1,9 +1,9 @@
 import { collection, collectionGroup, doc, getDoc, getDocs } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { db, getUserWithUsername, postToJSON } from "../../lib/firebase";
-import PostContent from '../../components/PostContent'
+import PostContent from "../../components/PostContent"
 import { Box, Button, Container, Flex } from "@chakra-ui/react";
-import Metatags from '../../components/Metatags';
+import Metatags from "../../components/Metatags";
 import UpButton from "../../components/UpButton";
 import AuthCheck from "../../components/AuthCheck";
 import Link from "next/link";
@@ -22,7 +22,7 @@ export async function getStaticProps({ params }) {
     let path;
 
     if (userDoc) {
-        const postRef = collection(ref, 'posts');
+        const postRef = collection(ref, "posts");
         const docRef = doc(postRef, slug);
         post = postToJSON(await getDoc(docRef));
         path = docRef.path;
@@ -35,7 +35,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-    const docRef = collectionGroup(db, 'posts');
+    const docRef = collectionGroup(db, "posts");
     const snapshot = await getDocs(docRef);
 
     const paths = snapshot.docs.map(doc => {
@@ -46,7 +46,7 @@ export async function getStaticPaths() {
 
     return {
         paths,
-        fallback: 'blocking'
+        fallback: "blocking"
     };
 };
 
@@ -60,26 +60,26 @@ const UserPost = (props) => {
         <>
             <Metatags title={`${post?.title} - @${post?.username}`} />
             <Container
-                maxW={'100%'}
+                maxW={"100%"}
             >
                 <Flex
-                    justifyContent={'space-between'}
-                    alignItems={'start'}
-                    flexWrap={'wrap'}
+                    justifyContent={"space-between"}
+                    alignItems={"start"}
+                    flexWrap={"wrap"}
                 >
                     {/* <Box
-                        padding={'1rem'}
-                        width={'10%'}
+                        padding={"1rem"}
+                        width={"10%"}
                     >
                         <AuthCheck
                             fallback={
-                                <Link href={'/enter'}>
+                                <Link href={"/enter"}>
                                     <Button
-                                        type='submit'
-                                        bg={'#000'}
-                                        color={'white'}
-                                        _hover={{ bg: '#000', textDecoration: 'underline' }}
-                                        mt={'4'}
+                                        type="submit"
+                                        bg={"#000"}
+                                        color={"white"}
+                                        _hover={{ bg: "#000", textDecoration: "underline" }}
+                                        mt={"4"}
                                     >Enter to interact</Button>
                                 </Link>
                             }
@@ -89,7 +89,7 @@ const UserPost = (props) => {
                         </AuthCheck>
                     </Box> */}
                     <Box
-                        width={'100%'}
+                        width={"100%"}
                     >
                         <PostContent post={post} />
                     </Box>
@@ -97,18 +97,18 @@ const UserPost = (props) => {
                 {
                     currentUser?.uid === post.uid && (
                         <Flex
-                            justifyContent={'flex-end'}
+                            justifyContent={"flex-end"}
                         >
                             <Link href={`/admin/${post.slug}`}>
                                 <Button
-                                    bg={'blue.500'}
-                                    color={'white'}
-                                    rounded={'xl'}
+                                    bg={"blue.500"}
+                                    color={"white"}
+                                    rounded={"xl"}
                                     _hover={{
-                                        bg: 'blue.700',
+                                        bg: "blue.700",
                                     }}
                                     _focus={{
-                                        bg: 'blue.700',
+                                        bg: "blue.700",
                                     }}>
                                     Edit
                                 </Button>

@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { useContext } from 'react';
-import { UserContext } from '../lib/context';
+import Link from "next/link";
+import { useContext } from "react";
+import { UserContext } from "../lib/context";
 
 const AuthCheck = props => {
   const { username } = useContext(UserContext);

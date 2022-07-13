@@ -16,11 +16,11 @@ export async function getServerSideProps({ query }) {
 
     if (userDoc) {
         userDoc.forEach(doc => { user = doc.data(); });
-        const userRef = collection(ref, 'posts')
+        const userRef = collection(ref, "posts")
         const postQuery = q(
             userRef,
-            where('published', '==', true),
-            orderBy('createdAt', 'desc'),
+            where("published", "==", true),
+            orderBy("createdAt", "desc"),
             limit(5)
         );
         posts = (await getDocs(postQuery)).docs.map(postToJSON);
@@ -32,16 +32,16 @@ export async function getServerSideProps({ query }) {
 const UserProfilePage = ({ user, posts }) => {
     return (
         <>
-            <Metatags title={`@${user.username}`} description='Profile of the Blog Wep App' />
+            <Metatags title={`@${user.username}`} description="Profile of the Blog Wep App" />
             <Stack
-                maxW={'container.md'}
-                margin={'0 auto'}
-                divider={<StackDivider borderColor={'gray.300'} />}
+                maxW={"container.md"}
+                margin={"0 auto"}
+                divider={<StackDivider borderColor={"gray.300"} />}
             >
                 <UserProfile user={user} />
                 {
                     posts?.length === 0 ? (
-                        <Text textAlign={'center'} fontSize={'xl'}>There are no posts 😣</Text>
+                        <Text textAlign={"center"} fontSize={"xl"}>There are no posts 😣</Text>
                     ) : (
                         <Feed posts={posts} />
                     )

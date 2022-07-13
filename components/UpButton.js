@@ -1,5 +1,5 @@
 import { db, auth } from "../lib/firebase";
-import { useDocument } from 'react-firebase-hooks/firestore';
+import { useDocument } from "react-firebase-hooks/firestore";
 import { doc, writeBatch, increment } from "firebase/firestore";
 import { Button } from "@chakra-ui/react";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
@@ -28,8 +28,8 @@ export default function({ postRef }){
     };
 
     return upDoc?.exists ? (
-        <Button variant={'ghost'} onClick={upRemove}><BiDownArrow /> Down</Button>
+        <Button variant={"ghost"} onClick={upRemove}><BiDownArrow /> Down</Button>
     ) : (
-        <Button variant={'ghost'} onClick={upTouch}><BiUpArrow /> Up</Button>
+        <Button variant={"ghost"} onClick={upTouch}><BiUpArrow /> Up</Button>
     )
 };

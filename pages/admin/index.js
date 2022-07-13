@@ -43,7 +43,7 @@ function PostList() {
             </Container>
             {
                 posts?.length === 0 ? (
-                    <Text textAlign={"center"} fontSize={"xl"}>You don"t have any post 😣</Text>
+                    <Text textAlign={"center"} fontSize={"xl"}>You dont have any post 😣</Text>
                 ) : (
                     <Feed posts={posts} admin />
                 )

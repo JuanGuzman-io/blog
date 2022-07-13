@@ -238,7 +238,7 @@ function DeletePost({ postRef }) {
     const handleDelete = async () => {
         await deleteDoc(postRef);
         router.push("/");
-        toast("Deleted successfully1", { icon: "🗑️" });
+        toast("Deleted successfully!", { icon: "🗑️" });
     }
 
     return (

@@ -172,6 +172,7 @@ function PostForm({ postRef, defaultValues, preview }) {
                             <Code>Image uploaded!</Code>
                             <Image
                                 src={imageURL}
+                                alt={'Image upload'}
                                 boxSize='100px'
                                 objectFit='cover'
                             />

@@ -36,6 +36,7 @@ function FormProfile() {
 
     useEffect(() => {
         setName(user?.displayName);
+        // eslint-disable-next-line
     }, []);
 
     const handleChange = e => {
@@ -63,8 +64,8 @@ function FormProfile() {
             displayName: name
         });
     }
-
     return (
+
         <Box
             maxW={'100%'}
             w={'full'} deletePost
@@ -149,7 +150,7 @@ function DeleteAccount() {
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                        <AlertDialogHeader fontSize={'lg'} fontWeight={'bold'}>
                             Delete account
                         </AlertDialogHeader>
 

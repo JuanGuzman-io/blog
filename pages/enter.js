@@ -117,6 +117,7 @@ function Redirect() {
     const { user, username } = useContext(UserContext);
 
     useEffect(() => {
+        // eslint-disable-next-line
         if (user && username) {
             router.push('/');
         }
@@ -162,6 +163,7 @@ function UsernameForm() {
     }
 
     useEffect(() => {
+        // eslint-disable-next-line
         checkUsername(formValue);
     }, [formValue]);
 

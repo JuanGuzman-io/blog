@@ -1,11 +1,11 @@
 import { db, auth } from "../lib/firebase";
 import { useDocument } from 'react-firebase-hooks/firestore';
-import { doc, writeBatch, increment, collection } from "firebase/firestore";
+import { doc, writeBatch, increment } from "firebase/firestore";
 import { Button } from "@chakra-ui/react";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
 
 export default function({ postRef }){
-    const upRef = collection(db, `%${postRef}/heart/${auth.currentUser.uid}`);
+    const upRef = doc(db, `%${postRef}/heart/${auth.currentUser.uid}`);
     const [upDoc] = useDocument(upRef);
 
     const upTouch = async () => {
